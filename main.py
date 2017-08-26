@@ -28,7 +28,17 @@ jinja_env = jinja2.Environment(
 class MainHandler(webapp2.RequestHandler):
     def get(self):
         template = jinja_env.get_template('templates/main.html')
-        self.response.write(template.render())
+
+        main_template_variables = {
+            'lyric_left': 'I rock, I roll, I bloom, I glow',
+            'song_name_left': 'Where This Flower Blooms',
+            'artist_name_left': 'Tyler, The Creator',
+            'lyric_right':"Ain't nobody prayin' for me",
+            'song_name_right':'FEEL.',
+            'artist_name_right':'Kendrick Lamar'
+        }
+
+        self.response.write(template.render(main_template_variables))
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler)
