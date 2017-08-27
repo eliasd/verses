@@ -10,6 +10,6 @@ class Song(ndb.Model):
 
 class OneLineLyric(ndb.Model):
     lyric_text = ndb.StringProperty()
-    upvotes = ndb.IntegerProperty()
+    vote_count = ndb.IntegerProperty()
     song_key = ndb.KeyProperty(Song)
     artist_key = ndb.KeyProperty(Artist)
