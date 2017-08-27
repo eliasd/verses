@@ -91,6 +91,8 @@ body{
   font-family:'Open Sans';
 
   background-color:blue;
+  /*Changes the cursor to pointer whenever you hover over the lyric section*/
+  cursor:pointer;
 
 }
 
