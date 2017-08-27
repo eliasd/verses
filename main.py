@@ -28,7 +28,7 @@ jinja_env = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)))
 
 
-##BUILD CRON FILE
+##NOTICE: BUILD CRON FILE
 
 class MainHandler(webapp2.RequestHandler):
     def get(self):
@@ -77,7 +77,7 @@ class MainHandler(webapp2.RequestHandler):
 
 class VoteHandler(webapp2.RequestHandler):
     def post(self):
-        #HERE The handler retreives the json data and extracts the specific datastore object that matches the json data
+        #HERE The handler recieves the json data and extracts the specific datastore object that matches the json data
         # The data that must match includes: Artist name, song-name, and lyric
         data = json.loads(self.request.body)
         artist = Artist.query(Artist.name==data["artist-name"]).get()
@@ -89,12 +89,13 @@ class VoteHandler(webapp2.RequestHandler):
         #lyric.vote_count += 1
         #lyric.put()
 
-        #NOTICE: THIS SECTION SHOULD randomly select a new One Line Lyric that is different from either of the lyrics
-        # already on the page
+        #NOTICE: THIS SECTION SHOULD randomly select TWO new One Line Lyric that is different from either of the lyrics
+        # already on the page in order to replace BOTH the Left and Right side lyrics
         lyric_list = OneLineLyric.query().fetch()
         new_lyric = lyric_list[2]
         new_song = Song.query(Song.key == new_lyric.song_key).get()
         new_artist = Artist.query(Artist.key == new_lyric.artist_key).get()
+        # NOTICE: Modify the data dictionary so that it matches the dictionary on the JS side
         self.response.out.write(json.dumps((
             {
             'lyric': new_lyric.lyric_text,

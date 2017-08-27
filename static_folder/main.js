@@ -6,18 +6,20 @@ function handlerOut(){
  $(this).css("background-color","blue");
 };
 
-// Handlers used for transforming lyric elements into clickable button elements
+// Handlers used for using AJAX to send the data on the page to the server
 function handlerVoteLeft(){
   $.ajax({
     type: "POST",
     url: "/vote/",
     dataType: 'json',
+    // NOTICE: Modify 'data' so that it also sends the data from the unselected lyric
     data: JSON.stringify(
       {
         "lyric": $('#lyric-left').text(),
         "song-name": $('#song-name-left').text(),
         "artist-name":$("#artist-name-left").text()
       })
+      // NOTICE: Modify data so that it updates BOTH the unselected and selected lyric with a new lyric
   }).done(function( data ) {
     $('#lyric-span-left').text(data['lyric']);
     $('#song-span-left').text(data['song-name']);
@@ -25,17 +27,15 @@ function handlerVoteLeft(){
   });
 
 };
+
+// NOTICE: AJAX Functionality has to be added to the Right-side section
 function handlerVoteRight(){
-  console.log("Right side was clicked")
-  console.log($('#lyric-right').text());
-  console.log($('#song-name-right').text());
-  console.log($('#artist-name-left').text());
+
 };
 
 
 function setupHandlers(){
   $('.section').hover(handlerIn,handlerOut);
-  // GET THIS to actually retreive the text for the lyric, song, and artist name so that it can be passed onto the funct()
   $('#section-left').click(handlerVoteLeft);
   $('#section-right').click(handlerVoteRight);
 }
