@@ -7,18 +7,25 @@ function handlerOut(){
 }
 
 // Handlers used for transforming lyric elements into clickable button elements
-function handleInputLeft(){
+function handlerVoteLeft(lyric_left,song_name_left,artist_name_left){
   console.log("Left side was clicked")
+  console.log()
+
 }
-function handleInputRight(){
+function handlerVoteRight(){
   console.log("Right side was clicked")
 }
 
 
 function setupHandlers(){
   $('.section').hover(handlerIn,handlerOut);
-  $('#section-left').click(handleInputLeft)
-  $('#section-right').click(handleInputRight)
+  // GET THIS to actually retreive the text for the lyric, song, and artist name so that it can be passed onto the funct()
+  $('#section-left').click(
+      handlerVoteLeft(
+        $('#section-left').filter("#lyric-left")
+      )
+    )
+  $('#section-right').click(handlerVoteRight)
 }
 
 

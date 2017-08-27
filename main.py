@@ -18,6 +18,10 @@ import jinja2
 import os
 import webapp2
 import logging
+# Try (later) to figure out what exactly the module methods do
+import json
+import config
+import re
 from google.appengine.ext import ndb
 from data_classes import OneLineLyric, Song, Artist
 
@@ -40,11 +44,11 @@ class MainHandler(webapp2.RequestHandler):
         # one_line_lyric_temp = OneLineLyric(lyric_text="I rock, I roll, I bloom, I glow",upvotes=0,song_key=song_temp_key,artist_key=artist_temp_key)
         # lyric_key = one_line_lyric_temp.put()
         #
-        # artist_temp = Artist(name = "Kendrick Lamar")
+        # artist_temp = Artist(name = "BROCKHAMPTON")
         # artist_temp_key = artist_temp.put()
-        # song_temp = Song(title = "FEEL.", artist_key = artist_temp_key)
+        # song_temp = Song(title = "SWEET", artist_key = artist_temp_key)
         # song_temp_key = song_temp.put()
-        # one_line_lyric_temp = OneLineLyric(lyric_text="Ain't nobody prayin' for me",upvotes=0,song_key=song_temp_key,artist_key=artist_temp_key)
+        # one_line_lyric_temp = OneLineLyric(lyric_text="Twistin' me up like licorice",upvotes=0,song_key=song_temp_key,artist_key=artist_temp_key)
         # lyric_key = one_line_lyric_temp.put()
 
         template = jinja_env.get_template('templates/main.html')
@@ -72,6 +76,12 @@ class MainHandler(webapp2.RequestHandler):
 
         self.response.write(template.render(main_template_variables))
 
+class VoteHandler(webapp2.RequestHandler):
+    def post(self):
+        data = json.loads
+
+
 app = webapp2.WSGIApplication([
-    ('/', MainHandler)
+    ('/', MainHandler),
+    ('/vote/',VoteHandler)
 ], debug=True)
