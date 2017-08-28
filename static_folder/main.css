@@ -96,6 +96,13 @@ body{
 
 }
 
+#lyric-left{
+  text-align: center;
+}
+
+#lyric-right{
+  text-align: center;
+}
 
 span.highlight-2{
   background-color:white;
@@ -109,15 +116,6 @@ span.highlight-1{
 
 .lyric-info {
   color:white;
-}
-
-#section-left{
-
-
-}
-
-#section-right{
-
 }
 
 #footer{
