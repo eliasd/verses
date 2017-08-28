@@ -23,13 +23,15 @@ import json
 import re
 from google.appengine.ext import ndb
 from data_classes import OneLineLyric, Song, Artist
+import random
 
 jinja_env = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)))
 
 
 ##NOTICE: BUILD CRON FILE
-
+def randomIndex(a,b):
+    return random.randint(a,b-1)
 class MainHandler(webapp2.RequestHandler):
     def get(self):
         # NOTICE: These were temporarily stored in Datastore in order to test ajax
@@ -43,11 +45,11 @@ class MainHandler(webapp2.RequestHandler):
         # one_line_lyric_temp = OneLineLyric(lyric_text="I rock, I roll, I bloom, I glow",vote_count=0,song_key=song_temp_key,artist_key=artist_temp_key)
         # lyric_key = one_line_lyric_temp.put()
         #
-        # artist_temp = Artist(name = "BROCKHAMPTON")
+        # artist_temp = Artist(name = "Jay-Z")
         # artist_temp_key = artist_temp.put()
-        # song_temp = Song(title = "SWEET", artist_key = artist_temp_key)
+        # song_temp = Song(title = "Legacy", artist_key = artist_temp_key)
         # song_temp_key = song_temp.put()
-        # one_line_lyric_temp = OneLineLyric(lyric_text="Twistin' me up like licorice",vote_count=0,song_key=song_temp_key,artist_key=artist_temp_key)
+        # one_line_lyric_temp = OneLineLyric(lyric_text="Black excellence baby, you gon' let 'em see",vote_count=0,song_key=song_temp_key,artist_key=artist_temp_key)
         # lyric_key = one_line_lyric_temp.put()
 
         template = jinja_env.get_template('templates/main.html')
@@ -77,30 +79,49 @@ class MainHandler(webapp2.RequestHandler):
 
 class VoteHandler(webapp2.RequestHandler):
     def post(self):
-        #HERE The handler recieves the json data and extracts the specific datastore object that matches the json data
+        #HERE The handler recieves the json data and extracts the specific datastore objects that matche the json data
         # The data that must match includes: Artist name, song-name, and lyric
         data = json.loads(self.request.body)
-        artist = Artist.query(Artist.name==data["artist-name"]).get()
-        song = Song.query(Song.title==data["song-name"] and Song.artist_key==artist.key).get()
-        lyric = OneLineLyric.query(OneLineLyric.lyric_text==data["lyric"] and OneLineLyric.song_key==song.key and OneLineLyric.artist_key==artist.key).get()
+        artist_selected = Artist.query(Artist.name==data["artist-name-selected"]).get()
+        song_selected = Song.query(Song.title==data["song-name-selected"] and Song.artist_key==artist_selected.key).get()
+        lyric_selected = OneLineLyric.query(OneLineLyric.lyric_text==data["lyric-selected"] and OneLineLyric.song_key==song_selected.key and OneLineLyric.artist_key==artist_selected.key).get()
+
+        artist_unselected = Artist.query(Artist.name==data["artist-name-unselected"]).get()
+        song_unselected = Song.query(Song.title==data["song-name-unselected"] and Song.artist_key==artist_unselected.key).get()
+        lyric_unselected = OneLineLyric.query(OneLineLyric.lyric_text==data["lyric-unselected"] and OneLineLyric.song_key==song_unselected.key and OneLineLyric.artist_key==artist_unselected.key).get()
 
         #NOTICE: HERE, THE vote count of the selected lyric would increase in the database but in order to preserve the data
         # for testing, it is commented out until the vote count will be used later for the Trending Page
-        #lyric.vote_count += 1
-        #lyric.put()
+        #lyric_selected.vote_count += 1
+        #lyric_selected.put()
 
-        #NOTICE: THIS SECTION SHOULD randomly select TWO new One Line Lyric that is different from either of the lyrics
+        #NOTICE: THIS SECTION randomly selects TWO new One Line Lyric that are different from either of the lyrics
         # already on the page in order to replace BOTH the Left and Right side lyrics
         lyric_list = OneLineLyric.query().fetch()
-        new_lyric = lyric_list[2]
-        new_song = Song.query(Song.key == new_lyric.song_key).get()
-        new_artist = Artist.query(Artist.key == new_lyric.artist_key).get()
-        # NOTICE: Modify the data dictionary so that it matches the dictionary on the JS side
+        list_len = len(lyric_list)
+        random_index_sel = randomIndex(0,list_len)
+        random_index_unsel = randomIndex(0,list_len)
+        while(random_index_sel==random_index_unsel or lyric_list[random_index_sel].key==lyric_selected.key or lyric_list[random_index_sel].key==lyric_unselected.key or
+            lyric_list[random_index_unsel].key==lyric_unselected.key or lyric_list[random_index_unsel].key==lyric_unselected.key):
+            random_index_sel = randomIndex(0,list_len)
+            random_index_unsel = randomIndex(0,list_len)
+
+        lyric_sel = lyric_list[random_index_sel]
+        song_sel = Song.query(Song.key == lyric_sel.song_key).get()
+        artist_sel = Artist.query(Artist.key == lyric_sel.artist_key).get()
+        lyric_unsel = lyric_list[random_index_unsel]
+        song_unsel = Song.query(Song.key == lyric_unsel.song_key).get()
+        artist_unsel = Artist.query(Artist.key == lyric_unsel.artist_key).get()
+
+        # NOTICE: This data dictionary sends this info to the JS side
         self.response.out.write(json.dumps((
             {
-            'lyric': new_lyric.lyric_text,
-            'song-name':new_song.title,
-            'artist-name':new_artist.name
+            'lyric-selected': lyric_sel.lyric_text,
+            'song-name-selected':song_sel.title,
+            'artist-name-selected':artist_sel.name,
+            'lyric-unselected':lyric_unsel.lyric_text,
+            'song-name-unselected':song_unsel.title,
+            'artist-name-unselected':artist_unsel.name
             })))
 
 

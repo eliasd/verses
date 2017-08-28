@@ -12,18 +12,25 @@ function handlerVoteLeft(){
     type: "POST",
     url: "/vote/",
     dataType: 'json',
+    // EVEN BIGGER NOTICE: YOU CAN SIMPLIFY THIS FURTHER BY: creating a function that alternates between left/right selection
     // NOTICE: Modify 'data' so that it also sends the data from the unselected lyric
     data: JSON.stringify(
       {
-        "lyric": $('#lyric-left').text(),
-        "song-name": $('#song-name-left').text(),
-        "artist-name":$("#artist-name-left").text()
+        "lyric-selected": $('#lyric-left').text(),
+        "song-name-selected": $('#song-name-left').text(),
+        "artist-name-selected":$("#artist-name-left").text(),
+        "lyric-unselected":$('#lyric-right').text(),
+        "song-name-unselected":$('#song-name-right').text(),
+        "artist-name-unselected":$('#artist-name-right').text()
       })
       // NOTICE: Modify data so that it updates BOTH the unselected and selected lyric with a new lyric
   }).done(function( data ) {
-    $('#lyric-span-left').text(data['lyric']);
-    $('#song-span-left').text(data['song-name']);
-    $('#artist-name-left').text(data['artist-name']);
+    $('#lyric-span-left').text(data['lyric-selected']);
+    $('#song-span-left').text(data['song-name-selected']);
+    $('#artist-name-left').text(data['artist-name-selected']);
+    $('#lyric-span-right').text(data['lyric-unselected']);
+    $('#song-span-right').text(data['song-name-unselected']);
+    $('#artist-name-right').text(data['artist-name-unselected']);
   });
 
 };
