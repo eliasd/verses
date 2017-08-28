@@ -90,7 +90,7 @@ class VoteHandler(webapp2.RequestHandler):
         song_unselected = Song.query(Song.title==data["song-name-unselected"] and Song.artist_key==artist_unselected.key).get()
         lyric_unselected = OneLineLyric.query(OneLineLyric.lyric_text==data["lyric-unselected"] and OneLineLyric.song_key==song_unselected.key and OneLineLyric.artist_key==artist_unselected.key).get()
 
-        #NOTICE: HERE, THE vote count of the selected lyric would increase in the database but in order to preserve the data
+        #NOTICE | IMPORTANT: HERE, THE vote count of the selected lyric would increase in the database but in order to preserve the data
         # for testing, it is commented out until the vote count will be used later for the Trending Page
         #lyric_selected.vote_count += 1
         #lyric_selected.put()
