@@ -13,7 +13,7 @@ function handlerVoteLeft(){
     url: "/vote/",
     dataType: 'json',
     // EVEN BIGGER NOTICE: YOU CAN SIMPLIFY THIS FURTHER BY: creating a function that alternates between left/right selection
-    // broswer uses ajax to send the data from the unselected and selected lyric
+    // broswer uses ajax to send this data, from the unselected and selected lyrics, to the server
     data: JSON.stringify(
       {
         "lyric-selected": $('#lyric-left').text(),
@@ -23,7 +23,9 @@ function handlerVoteLeft(){
         "song-name-unselected":$('#song-name-right').text(),
         "artist-name-unselected":$('#artist-name-right').text()
       })
-      // This section updates BOTH the unselected and selected lyrics with new lyrics
+      // Code to run if the request succeeds (is done);
+      // The response is passed to the function
+      // This function updates BOTH the unselected and selected lyrics with new lyrics
   }).done(function( data ) {
     $('#lyric-span-left').text(data['lyric-selected']);
     $('#song-span-left').text(data['song-name-selected']);
@@ -31,6 +33,13 @@ function handlerVoteLeft(){
     $('#lyric-span-right').text(data['lyric-unselected']);
     $('#song-span-right').text(data['song-name-unselected']);
     $('#artist-name-right').text(data['artist-name-unselected']);
+    // Code to run if the request fails; the raw request and
+    // status codes are passed to the function
+  }).fail(function( xhr, status, errorThrown ) {
+    alert( "Sorry, there was a problem!" );
+    console.log( "Error: " + errorThrown );
+    console.log( "Status: " + status );
+    console.dir( xhr );
   });
 
 };
@@ -60,6 +69,12 @@ function handlerVoteRight(){
     $('#lyric-span-left').text(data['lyric-unselected']);
     $('#song-span-left').text(data['song-name-unselected']);
     $('#artist-name-left').text(data['artist-name-unselected']);
+
+  }).fail(function( xhr, status, errorThrown ) {
+    alert( "Sorry, there was a problem!" );
+    console.log( "Error: " + errorThrown );
+    console.log( "Status: " + status );
+    console.dir( xhr );
   });
 };
 
