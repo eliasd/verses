@@ -80,6 +80,8 @@ class VoteHandler(webapp2.RequestHandler):
     def post(self):
         #HERE The handler recieves the json data and extracts the specific datastore objects that matche the json data
         # The data that must match includes: Artist name, song-name, and lyric
+        # NOTICE: Encoding issues may arise here in 'json.loads' due to specific non-ASCII characters; you may
+        #  have to specify an encoding name here (check 'json.loads' documentation)
         data = json.loads(self.request.body)
         artist_selected = Artist.query(Artist.name==data["artist-name-selected"]).get()
         song_selected = Song.query(Song.title==data["song-name-selected"] and Song.artist_key==artist_selected.key).get()
