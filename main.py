@@ -82,6 +82,8 @@ class VoteHandler(webapp2.RequestHandler):
         # The data that must match includes: Artist name, song-name, and lyric
         # NOTICE: Encoding issues may arise here in 'json.loads' due to specific non-ASCII characters; you may
         #  have to specify an encoding name here (check 'json.loads' documentation)
+        # Possible solution:    data_unicode = request.body.decode('utf-8')
+        #                       data = json.loads(data_unicode)
         data = json.loads(self.request.body)
         artist_selected = Artist.query(Artist.name==data["artist-name-selected"]).get()
         song_selected = Song.query(Song.title==data["song-name-selected"] and Song.artist_key==artist_selected.key).get()
