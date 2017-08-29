@@ -20,7 +20,6 @@ import webapp2
 import logging
 # Try (later) to figure out what exactly the module methods do
 import json
-import re
 from google.appengine.ext import ndb
 from data_classes import OneLineLyric, Song, Artist
 import random
