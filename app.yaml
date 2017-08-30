@@ -14,7 +14,7 @@ handlers:
 
 # Handles the cron task for one line lyric)
 - url: /crons/oneline
-  script: crontasks.app
+  script: cronTasks.app
 
 # the ending tag of main.app is .app instead of .py as
 # app is declared as a global WSGI variable for
