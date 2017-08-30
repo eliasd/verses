@@ -1,7 +1,11 @@
 import re
 import urllib2
+# This is placed here in order to manually include the outside library 'bs4' from the lib directory
+import sys
+sys.path.insert(0, 'lib')
 from bs4 import BeautifulSoup
 
+# # Part of 'album_track_lyric_search_functions'
 #Gets the lyrics to a song from azlyrics.com (eventually shift this over to Genius.com bc it has a larger library)
 def get_lyrics(artist,song_title):
     artist = artist.lower()

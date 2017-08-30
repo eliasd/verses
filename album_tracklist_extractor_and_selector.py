@@ -1,8 +1,12 @@
 import re
 import urllib2
+# This is placed here in order to manually include the outside library 'bs4' from the lib directory
+import sys
+sys.path.insert(0, 'lib')
 from bs4 import BeautifulSoup
 import random
 
+# Part of 'album_track_lyric_search_functions'
 #finds the tracks within an album and then randomly selects one track and returns the title of that track
 def get_random_track(artist,album):
     artist = artist.lower()

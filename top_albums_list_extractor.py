@@ -1,7 +1,12 @@
 import re
 import urllib2
+# This is placed here in order to manually include the outside library 'bs4' from the lib directory
+#
+import sys
+sys.path.insert(0, 'lib')
 from bs4 import BeautifulSoup
 
+# Part of 'album_track_lyric_search_functions'
 #returns a dictionary of the top 50 hip-hop/r&b albums on the billboard charts with the albums defining the artist names
 def get_top_albums():
     url = "http://www.billboard.com/charts/r-b-hip-hop-albums"

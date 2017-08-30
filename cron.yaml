@@ -1,4 +1,4 @@
 cron:
 - description: weekly one-line verse retreival and storage
-  url: /task/cron/oneline
+  url: /crons/oneline
   schedule: every tuesday 03:00

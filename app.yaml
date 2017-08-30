@@ -13,13 +13,13 @@ handlers:
   static_dir: static_folder
 
 # Handles the cron task for one line lyric)
-- url: /task/cron/oneline
-  script: cronTasks.app
+- url: /crons/oneline
+  script: crontasks.app
 
+# the ending tag of main.app is .app instead of .py as
+# app is declared as a global WSGI variable for
+# handling requests
 - url: .*
-  # the ending tag is .app instead of .py as
-  # app is declared as a global WSGI variable for
-  # handling requests
   script: main.app
 
 libraries:

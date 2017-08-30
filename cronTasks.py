@@ -1,9 +1,7 @@
-from google.appengine.ext import webapp
-from google.appengine.ext.webapp.util import run_wsgi_app
+import webapp2
 from google.appengine.ext import ndb
-from data_classes import OneLineLyric, Song, Artist
 import logging
-
+import os
 
 from top_albums_list_extractor import get_top_albums
 from album_tracklist_extractor_and_selector import get_random_track
@@ -11,18 +9,15 @@ from artists_from_song import get_artists_fr_song
 from lyric_extractor import get_lyrics
 from one_line_lyric_extractor import get_one_lyric
 
-print get_lyrics("Tyler, The Creator","Boredom")
+from data_classes import OneLineLyric, Song, Artist
 
-class OneLineHandler(webapp2.RequetHandler):
+
+class OneLineHandler(webapp2.RequestHandler):
     def get(self):
-        self.response.write('sup')
+        lyric = get_lyrics("Tyler, The Creator","Where This Flower Blooms")
 
-
-
+        logging.info(get_one_lyric(lyric))
 
 app = webapp2.WSGIApplication([
-    ('/task/cron/oneline',OneLineHandler)
+    ('/crons/oneline',OneLineHandler)
 ], debug=True)
-
-if __name__ == '__cronTasks__':
-    run_wsgi_app(app)

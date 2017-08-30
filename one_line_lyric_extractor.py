@@ -1,10 +1,12 @@
 import re
 import urllib2
+# This is placed here in order to manually include the outside library 'bs4' from the lib directory
+import sys
+sys.path.insert(0, 'lib')
 from bs4 import BeautifulSoup
 import random
 
-from lyric_extractor import get_lyrics
-
+# Part of 'album_track_lyric_search_functions'
 #parses through a song's lyrics and randomly returns one line from the track
 def get_one_lyric(song_lyrics):
     try:
@@ -29,6 +31,6 @@ def get_one_lyric(song_lyrics):
         return "Exception occurred \n" +str(e)
 
 
-lyric = get_lyrics("Tyler, The Creator","Where This Flower Blooms")
-
-print get_one_lyric(lyric)
+# lyric = get_lyrics("Tyler, The Creator","Where This Flower Blooms")
+#
+# print get_one_lyric(lyric)

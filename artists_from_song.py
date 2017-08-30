@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 import re
 import urllib2
+# This is placed here in order to manually include the outside library 'bs4' from the lib directory
+import sys
+sys.path.insert(0, 'lib')
 from bs4 import BeautifulSoup
 
-
+# Part of 'album_track_lyric_search_functions'
 #retreives all artists featured on the song
 #retreives from Genius.com
 def get_artists_fr_song(artist,song_title):
@@ -59,4 +62,4 @@ def get_artists_fr_song(artist,song_title):
     except Exception as e:
         return "Exception occurred \n" +str(e)
 
-print get_artists_fr_song("2 Chainz","It's A Vibe")
+# print get_artists_fr_song("2 Chainz","It's A Vibe")
