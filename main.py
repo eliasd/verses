@@ -36,18 +36,18 @@ class MainHandler(webapp2.RequestHandler):
         #   Ultimately, this section would randomly retrieve Datastore elements that were already stored in the Database
         #   due to the Cron Tab and Execution (as opposed to manually storing them here)
         #------------------------------------------------------------------------------------------------------#
-        # artist_temp = Artist(name = "Tyler, The Creator")
+        # artist_temp = Artist(name = "BROCKHAMPTON")
         # artist_temp_key = artist_temp.put()
-        # song_temp = Song(title = "Where This Flower Blooms", artist_key = artist_temp_key)
+        # song_temp = Song(title = "GOLD", artist_key = artist_temp_key)
         # song_temp_key = song_temp.put()
-        # one_line_lyric_temp = OneLineLyric(lyric_text="I rock, I roll, I bloom, I glow",vote_count=0,song_key=song_temp_key,artist_key=artist_temp_key)
+        # one_line_lyric_temp = OneLineLyric(lyric_text="Grab life by the horns when I whip the Lambo",vote_count=0,song_key=song_temp_key,artist_key=artist_temp_key,feat_artist='')
         # lyric_key = one_line_lyric_temp.put()
-        #
-        # artist_temp = Artist(name = "Jay-Z")
+        # #
+        # artist_temp = Artist(name = "Kendrick Lamar")
         # artist_temp_key = artist_temp.put()
-        # song_temp = Song(title = "Legacy", artist_key = artist_temp_key)
+        # song_temp = Song(title = "FEEL.", artist_key = artist_temp_key)
         # song_temp_key = song_temp.put()
-        # one_line_lyric_temp = OneLineLyric(lyric_text="Black excellence baby, you gon' let 'em see",vote_count=0,song_key=song_temp_key,artist_key=artist_temp_key)
+        # one_line_lyric_temp = OneLineLyric(lyric_text="Ain't nobody prayin' for me",vote_count=0,song_key=song_temp_key,artist_key=artist_temp_key,feat_artist='')
         # lyric_key = one_line_lyric_temp.put()
 
         template = jinja_env.get_template('templates/main.html')
@@ -67,10 +67,13 @@ class MainHandler(webapp2.RequestHandler):
             'lyric_left': left_lyric_el.lyric_text,
             'song_name_left': left_song_el.title,
             'artist_name_left': left_artist_el.name,
+            'feat_artist_left': left_lyric_el.feat_artist,
 
             'lyric_right': right_lyric_el.lyric_text,
             'song_name_right':right_song_el.title,
-            'artist_name_right':right_artist_el.name
+            'artist_name_right':right_artist_el.name,
+            'feat_artist_right':right_lyric_el.feat_artist
+
         }
 
         self.response.write(template.render(main_template_variables))
@@ -111,9 +114,25 @@ class VoteHandler(webapp2.RequestHandler):
         lyric_sel = lyric_list[random_index_sel]
         song_sel = Song.query(Song.key == lyric_sel.song_key).get()
         artist_sel = Artist.query(Artist.key == lyric_sel.artist_key).get()
+        #If feat_artist is not an empty string, a new string is combined so that it includes 'ft.'
+        featured_artist_sel = ""
+        if lyric_sel.feat_artist:
+            featured_artist_sel = "(ft. %s)" % lyric_sel.feat_artist
+        else:
+            featured_artist_sel = ""
+
+
         lyric_unsel = lyric_list[random_index_unsel]
         song_unsel = Song.query(Song.key == lyric_unsel.song_key).get()
         artist_unsel = Artist.query(Artist.key == lyric_unsel.artist_key).get()
+        #If feat_artist is not an empty string, a new string is combined so that it includes 'ft.'
+        featured_artist_unsel = ""
+        if lyric_unsel.feat_artist:
+            featured_artist_unsel = "(ft. %s)" % lyric_unsel.feat_artist
+        else:
+            featured_artist_unsel = ""
+
+
 
         # NOTICE: This data dictionary sends this info to the JS side
         self.response.out.write(json.dumps((
@@ -121,9 +140,11 @@ class VoteHandler(webapp2.RequestHandler):
             'lyric-selected': lyric_sel.lyric_text,
             'song-name-selected':song_sel.title,
             'artist-name-selected':artist_sel.name,
+            'feat-artist-selected':featured_artist_sel,
             'lyric-unselected':lyric_unsel.lyric_text,
             'song-name-unselected':song_unsel.title,
-            'artist-name-unselected':artist_unsel.name
+            'artist-name-unselected':artist_unsel.name,
+            'feat-artist-unselected':featured_artist_unsel
             })))
 
 

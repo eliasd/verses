@@ -13,9 +13,22 @@ from data_classes import OneLineLyric, Song, Artist
 
 class OneLineHandler(webapp2.RequestHandler):
     def get(self):
-        lyric = get_lyrics("Tyler, The Creator","Where This Flower Blooms")
+        # Three dictionaries contain three different lists of the 'top' hiphop/rap albums
+        album_dict1 = get_top_albums_billboard()
+        album_dict2 = get_top_albums_billboard_2()
+        album_dict3 = get_top_albums_itunes()
 
-        logging.info(get_one_lyric(lyric))
+        for album_name in album_dict1:
+            artist_name = album_dict1[album_name]
+            # This retrieves a random track from the selected album
+            random_track = get_random_track(artist_name,album_name)
+            artist_list = 
+
+
+
+
+
+
 
 app = webapp2.WSGIApplication([
     ('/crons/oneline',OneLineHandler)

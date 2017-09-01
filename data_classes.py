@@ -1,6 +1,5 @@
 from google.appengine.ext import ndb
 
-
 class Artist(ndb.Model):
     name = ndb.StringProperty()
 
@@ -13,3 +12,5 @@ class OneLineLyric(ndb.Model):
     vote_count = ndb.IntegerProperty()
     song_key = ndb.KeyProperty(Song)
     artist_key = ndb.KeyProperty(Artist)
+    #Any featured artists are combined into one string (if no artists then left an empty string)
+    feat_artist = ndb.StringProperty()
