@@ -63,6 +63,6 @@ def get_random_track(artist,album):
         random_index = random.randint(0,track_length-1)
         return track_list[random_index]
     except Exception as e:
-        return "Exception occurred \n" +str(e)
+        return "Exception occurred \n"
 
-# print get_random_track('2pac','All Eyez On Me (Remastered)')
+# print get_random_track('Bryson Tiller','T R A P S O U L')

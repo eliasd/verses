@@ -36,18 +36,18 @@ class MainHandler(webapp2.RequestHandler):
         #   Ultimately, this section would randomly retrieve Datastore elements that were already stored in the Database
         #   due to the Cron Tab and Execution (as opposed to manually storing them here)
         #------------------------------------------------------------------------------------------------------#
-        # artist_temp = Artist(name = "BROCKHAMPTON")
+        # artist_temp = Artist(name = "Tyler, The Creator")
         # artist_temp_key = artist_temp.put()
-        # song_temp = Song(title = "GOLD", artist_key = artist_temp_key)
+        # song_temp = Song(title = "Where This Flower Blooms", artist_key = artist_temp_key,feat_artist="Frank Ocean")
         # song_temp_key = song_temp.put()
-        # one_line_lyric_temp = OneLineLyric(lyric_text="Grab life by the horns when I whip the Lambo",vote_count=0,song_key=song_temp_key,artist_key=artist_temp_key,feat_artist='')
+        # one_line_lyric_temp = OneLineLyric(lyric_text="I rock, I roll, I bloom, I glow (I glow)",vote_count=0,song_key=song_temp_key,artist_key=artist_temp_key)
         # lyric_key = one_line_lyric_temp.put()
         # #
-        # artist_temp = Artist(name = "Kendrick Lamar")
+        # artist_temp = Artist(name = "Jay-Z")
         # artist_temp_key = artist_temp.put()
-        # song_temp = Song(title = "FEEL.", artist_key = artist_temp_key)
+        # song_temp = Song(title = "Legacy", artist_key = artist_temp_key,feat_artist="")
         # song_temp_key = song_temp.put()
-        # one_line_lyric_temp = OneLineLyric(lyric_text="Ain't nobody prayin' for me",vote_count=0,song_key=song_temp_key,artist_key=artist_temp_key,feat_artist='')
+        # one_line_lyric_temp = OneLineLyric(lyric_text="Black excellence baby, you gon' let 'em see",vote_count=0,song_key=song_temp_key,artist_key=artist_temp_key)
         # lyric_key = one_line_lyric_temp.put()
 
         template = jinja_env.get_template('templates/main.html')
@@ -67,12 +67,12 @@ class MainHandler(webapp2.RequestHandler):
             'lyric_left': left_lyric_el.lyric_text,
             'song_name_left': left_song_el.title,
             'artist_name_left': left_artist_el.name,
-            'feat_artist_left': left_lyric_el.feat_artist,
+            'feat_artist_left': left_song_el.feat_artist,
 
             'lyric_right': right_lyric_el.lyric_text,
             'song_name_right':right_song_el.title,
             'artist_name_right':right_artist_el.name,
-            'feat_artist_right':right_lyric_el.feat_artist
+            'feat_artist_right':right_song_el.feat_artist
 
         }
 
@@ -116,8 +116,8 @@ class VoteHandler(webapp2.RequestHandler):
         artist_sel = Artist.query(Artist.key == lyric_sel.artist_key).get()
         #If feat_artist is not an empty string, a new string is combined so that it includes 'ft.'
         featured_artist_sel = ""
-        if lyric_sel.feat_artist:
-            featured_artist_sel = "(ft. %s)" % lyric_sel.feat_artist
+        if song_sel.feat_artist:
+            featured_artist_sel = "(ft. %s)" % song_sel.feat_artist
         else:
             featured_artist_sel = ""
 
@@ -127,8 +127,8 @@ class VoteHandler(webapp2.RequestHandler):
         artist_unsel = Artist.query(Artist.key == lyric_unsel.artist_key).get()
         #If feat_artist is not an empty string, a new string is combined so that it includes 'ft.'
         featured_artist_unsel = ""
-        if lyric_unsel.feat_artist:
-            featured_artist_unsel = "(ft. %s)" % lyric_unsel.feat_artist
+        if song_unsel.feat_artist:
+            featured_artist_unsel = "(ft. %s)" % song_unsel.feat_artist
         else:
             featured_artist_unsel = ""
 

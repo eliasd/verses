@@ -58,8 +58,21 @@ def get_artists_fr_song(artist,song_title):
                 front_index = song_info.find('&quot;',end_index+1)
                 end_index = song_info.find('&quot;',front_index+1)
 
-        return artist_list
+        featured_artists = ""
+        if len(artist_list) == 1:
+            featured_artists = ""
+        elif len(artist_list) == 2:
+            featured_artists = artist_list[1]
+        else:
+            last_index = len(artist_list)-1
+            for n in range(1,len(artist_list)):
+                if n!=last_index:
+                    featured_artists+=artist_list[n]+", "
+                else:
+                    featured_artists+=artist_list[n]
+
+        return featured_artists
     except Exception as e:
         return "Exception occurred \n" +str(e)
 
-# print get_artists_fr_song("2 Chainz","It's A Vibe")
+# print get_artists_fr_song("A$AP Mob","RAF")
