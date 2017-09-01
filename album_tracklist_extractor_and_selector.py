@@ -9,11 +9,13 @@ import random
 # Part of 'album_track_lyric_search_functions'
 #finds the tracks within an album and then randomly selects one track and returns the title of that track
 def get_random_track(artist,album):
+    # This removes any 'deluxe' or 'remastered' tags from the album name
+    album = album.replace(' (Deluxe)','').replace(' (Deluxe Version)','').replace(' (Remastered)','')
     artist = artist.lower()
     first_letter_artist_name = artist[0:1]
     if(first_letter_artist_name.isdigit()):
         first_letter_artist_name='19'
-    # remove all except alphanumeric characters from artist and song_title
+    # remove all except alphanumeric characters from artist
     artist = re.sub('[^A-Za-z0-9]+', "", artist)
     if artist.startswith("the"):    # remove starting 'the' from artist e.g. the who -> who
         artist = artist[3:]
@@ -62,3 +64,5 @@ def get_random_track(artist,album):
         return track_list[random_index]
     except Exception as e:
         return "Exception occurred \n" +str(e)
+
+# print get_random_track('2pac','All Eyez On Me (Remastered)')
