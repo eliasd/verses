@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import re
 import urllib2
 # This is placed here in order to manually include the outside library 'bs4' from the lib directory
@@ -6,8 +7,118 @@ sys.path.insert(0, 'lib')
 from bs4 import BeautifulSoup
 
 # # Part of 'album_track_lyric_search_functions'
-#Gets the lyrics to a song from azlyrics.com (eventually shift this over to Genius.com bc it has a larger library)
 def get_lyrics(artist,song_title):
+    artist = artist.lower()
+    artist = artist.capitalize()
+    artist_split_list = artist.split(" ")
+    artist = ""
+    #loops through and produces an artist string that is usuable in the url search
+    for n in range(0,len(artist_split_list)):
+        #all instances of a period are deleted and '&' and 'é' are replaced
+        artist_split_list[n] = artist_split_list[n].replace(".","").replace("&","and").replace("é","e")
+        #all other non-alphanumeric characters are replaced by a '-'
+        #these include: "-","$",","
+        artist_split_list[n] = re.sub('[^A-Za-z0-9]+',"-",artist_split_list[n])
+        len_of_word = len(artist_split_list[n])
+        if n==0 and artist_split_list[n][0:1] == "-":
+            artist += artist_split_list[n][1:]
+        elif len_of_word==1 and artistm_split_list[n] == "-":
+            continue
+        elif artist_split_list[n][len_of_word-1:len_of_word] == "-" and n!=len(artist_split_list)-1:
+            artist += artist_split_list[n]
+        elif n==len(artist_split_list)-1 and artist_split_list[n][len_of_word-1:len_of_word] == "-":
+            artist += artist_split_list[n][0:len_of_word-1]
+        elif n==len(artist_split_list)-1 and artist_split_list[n][len_of_word-1:len_of_word] != "-":
+            artist += artist_split_list[n]
+        else:
+            artist += artist_split_list[n]+"-"
+
+    song_title = song_title.lower()
+    song_split_list = song_title.split(" ")
+    song_title = ""
+    #loops through and produces a song_title string that is usuable in the url search
+    for n in range(0,len(song_split_list)):
+        song_split_list[n] = song_split_list[n].replace("'","").replace("&","and").replace(".","").replace("(","").replace(")","")
+        song_split_list[n] = re.sub('[^A-Za-z0-9]+',"-",song_split_list[n])
+        len_of_word = len(song_split_list[n])
+        if n==0 and song_split_list[n][0:1] == "-":
+            song_title += song_split_list[n][1:]
+        elif len_of_word==1 and song_split_list[n] == "-":
+            continue
+        elif song_split_list[n][len_of_word-1:len_of_word] == "-" and n!=len(song_split_list)-1:
+            song_title += song_split_list[n]
+        elif n==len(song_split_list)-1 and song_split_list[n][len_of_word-1:len_of_word] == "-":
+            song_title += song_split_list[n][0:len_of_word-1]
+        elif n==len(song_split_list)-1 and song_split_list[n][len_of_word-1:len_of_word] != "-":
+            song_title += song_split_list[n]
+        else:
+            song_title += song_split_list[n]+"-"
+
+    url = "https://genius.com/"+artist+"-"+song_title+"-lyrics"
+
+    try:
+        #note that User-Agent header is required since Genius returns 403 - Forbidden without it
+        headers = { 'User-Agent' : 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.1916.153 Safari/537.36' }
+        req = urllib2.Request(url, None, headers)
+        content = urllib2.urlopen(req).read()
+        soup = BeautifulSoup(content, 'html.parser')
+        lyric_page = str(soup)
+
+        up_partition = '<div class="lyrics">'
+        down_partition = '<div initial-content-for="recirculated_content">'
+        lyric_page = lyric_page.split(up_partition)[1]
+        lyric_page = lyric_page.split(down_partition)[0]
+        up_partition = '<!--sse-->'
+        down_partition = '<!--/sse-->'
+        lyric_page = lyric_page.split(up_partition)[1]
+        lyric_page = lyric_page.split(down_partition)[0]
+
+        # Results in a list of lyrics with each line being a seperate element
+        no_more_tags = False
+        lyric_list = []
+        current_index = lyric_page.find("<p>")
+        limit_index = current_index + 15
+        while no_more_tags==False:
+            if lyric_page.find("</p>",current_index,limit_index)>=0:
+                break
+            elif lyric_page.find("<p>",current_index,limit_index)>=0:
+                front_index = lyric_page.find("<p>",current_index)+3
+                end_index = lyric_page.find("<",front_index)
+                verse = lyric_page[front_index:end_index]
+                verse = verse.replace("\n","")
+                if verse == "":
+                    current_index = end_index+1
+                    continue
+                lyric_list.append(verse)
+                print verse
+                current_index = end_index+1
+                limit_index = current_index + 15
+            elif lyric_page.find(">",current_index)>=0:
+                if lyric_page[lyric_page.find(">",current_index):lyric_page.find("<",current_index)+1] == "><":
+                    current_index = lyric_page.find("<",current_index)+1
+                    continue
+                front_index = lyric_page.find(">",current_index)+1
+                end_index = lyric_page.find("<",front_index)
+                verse = lyric_page[front_index:end_index]
+                verse = verse.replace("\n","")
+                if verse == "":
+                    current_index = end_index+1
+                    continue
+                lyric_list.append(verse)
+                print verse
+                current_index = end_index+1
+                limit_index = current_index +15
+            else:
+                no_more_tags = True
+
+        #this removes any lyric sections that are part of a music video
+
+        #this parts removes all of the "Verse #" and "intro/outro" Headers
+        return lyric_list
+    except Exception as e:
+        return "Exception occurred \n" +str(e)
+
+def get_lyrics2(artist,song_title):
     artist = artist.lower()
     song_title = song_title.lower()
     # remove all except alphanumeric characters from artist and song_title
@@ -31,4 +142,4 @@ def get_lyrics(artist,song_title):
     except Exception as e:
         return "Exception occurred \n" +str(e)
 
-# print get_lyrics("Tyler, The Creator","Boredom")
+print get_lyrics("Kendrick Lamar","FEEL.")
