@@ -72,48 +72,17 @@ def get_lyrics(artist,song_title):
         down_partition = '<!--/sse-->'
         lyric_page = lyric_page.split(up_partition)[1]
         lyric_page = lyric_page.split(down_partition)[0]
-
-        # Results in a list of lyrics with each line being a seperate element
-        no_more_tags = False
-        lyric_list = []
-        current_index = lyric_page.find("<p>")
-        limit_index = current_index + 15
-        while no_more_tags==False:
-            if lyric_page.find("</p>",current_index,limit_index)>=0:
-                break
-            elif lyric_page.find("<p>",current_index,limit_index)>=0:
-                front_index = lyric_page.find("<p>",current_index)+3
-                end_index = lyric_page.find("<",front_index)
-                verse = lyric_page[front_index:end_index]
-                verse = verse.replace("\n","")
-                if verse == "":
-                    current_index = end_index+1
-                    continue
-                lyric_list.append(verse)
-                print verse
-                current_index = end_index+1
-                limit_index = current_index + 15
-            elif lyric_page.find(">",current_index)>=0:
-                if lyric_page[lyric_page.find(">",current_index):lyric_page.find("<",current_index)+1] == "><":
-                    current_index = lyric_page.find("<",current_index)+1
-                    continue
-                front_index = lyric_page.find(">",current_index)+1
-                end_index = lyric_page.find("<",front_index)
-                verse = lyric_page[front_index:end_index]
-                verse = verse.replace("\n","")
-                if verse == "":
-                    current_index = end_index+1
-                    continue
-                lyric_list.append(verse)
-                print verse
-                current_index = end_index+1
-                limit_index = current_index +15
+        lyric_page = lyric_page.replace('</i>','').replace('<i>','').replace("</a>","").replace("<p>","").replace("</p>","").replace("<br/>","")
+        no_more_a_tags = False
+        while(no_more_a_tags==False):
+            if lyric_page.find("<a")>=0:
+                front_index = lyric_page.find("<a")
+                end_index = lyric_page.find(">",front_index)
+                lyric_page = lyric_page[:front_index] + "" + lyric_page[end_index+1:]
             else:
-                no_more_tags = True
-
-        #this removes any lyric sections that are part of a music video
-
-        #this parts removes all of the "Verse #" and "intro/outro" Headers
+                no_more_a_tags = True
+        # Returns a list of the lyrics with each line being a seperate element
+        lyric_list = lyric_page.split("\n")
         return lyric_list
     except Exception as e:
         return "Exception occurred \n" +str(e)
@@ -142,4 +111,5 @@ def get_lyrics2(artist,song_title):
     except Exception as e:
         return "Exception occurred \n" +str(e)
 
-print get_lyrics("Kendrick Lamar","FEEL.")
+# Test a little more
+print get_lyrics("Kendrick Lamar","lOYALTY.")
