@@ -19,11 +19,9 @@ function handlerVoteLeft(){
         "lyric-selected": $('#lyric-left').text(),
         "song-name-selected": $('#song-name-left').text(),
         "artist-name-selected":$("#artist-name-left").text(),
-        // "feat-artist-selected":$("#feat-artist-left").text(),
         "lyric-unselected":$('#lyric-right').text(),
         "song-name-unselected":$('#song-name-right').text(),
         "artist-name-unselected":$('#artist-name-right').text()
-        // "feat-artist-unselected":$('#feat-artist-right').text()
       })
       // Code to run if the request succeeds (is done);
       // The response is passed to the function
@@ -61,11 +59,9 @@ function handlerVoteRight(){
         "lyric-selected": $('#lyric-right').text(),
         "song-name-selected": $('#song-name-right').text(),
         "artist-name-selected":$("#artist-name-right").text(),
-        // "feat-artist-selected":$("#feat-artist-right").text(),
         "lyric-unselected":$('#lyric-left').text(),
         "song-name-unselected":$('#song-name-left').text(),
         "artist-name-unselected":$('#artist-name-left').text()
-        // "feat-artist-unselected":$('#feat-artist-left').text()
       })
       // This section updates BOTH the unselected and selected lyrics with new lyrics
   }).done(function( data ) {
@@ -74,12 +70,10 @@ function handlerVoteRight(){
     $('#artist-name-right').text(data['artist-name-selected']);
     $('#feat-artist-right').text(data['feat-artist-selected']);
     console.log("RIGHT SIDE CLICKED")
-    console.log(data['feat-artist-selected']);
     $('#lyric-span-left').text(data['lyric-unselected']);
     $('#song-span-left').text(data['song-name-unselected']);
     $('#artist-name-left').text(data['artist-name-unselected']);
     $('#feat-artist-left').text(data['feat-artist-unselected']);
-    console.log(data['feat-artist-unselected']);
 
   }).fail(function( xhr, status, errorThrown ) {
     alert( "Sorry, there was a problem!" );

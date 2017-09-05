@@ -11,28 +11,67 @@ from bs4 import BeautifulSoup
 #retreives from Genius.com
 def get_artists_fr_song(artist,song_title):
     artist_list = []
-    if(artist.find('&')>=0):
-        artist_copy = artist.replace('&','&amp;')
-        artist_list.append(artist_copy)
+    artist_original = artist
+    artist_copy1 = ""
+    artist_copy2 = ""
+    if(artist.find('and')>=0):
+        artist_copy1 = artist.replace('and','&')
+        artist_copy2 = artist.replace('and','And')
+    elif(artist.find("And")>=0):
+        artist_copy1 = artist.replace('And','&')
+        artist_copy2 = artist.replace('And','and')
     else:
-        artist_list.append(artist)
+        artist_copy1 = artist.replace('&','and')
+        artist_copy2 = artist.replace('&','And')
 
+    artist_list.append(artist)
+
+    #loops through and produces an artist string that is usuable in the url search
     artist = artist.lower()
     artist = artist.capitalize()
+    artist_split_list = artist.split(" ")
+    artist = ""
+    for n in range(0,len(artist_split_list)):
+        #all instances of a period are deleted and '&' and 'é' are replaced
+        artist_split_list[n] = artist_split_list[n].replace(".","").replace("&","and").replace("é","e")
+        #all other non-alphanumeric characters are replaced by a '-'
+        #these include: "-","$",","
+        artist_split_list[n] = re.sub('[^A-Za-z0-9]+',"-",artist_split_list[n])
+        len_of_word = len(artist_split_list[n])
+        if n==0 and artist_split_list[n][0:1] == "-":
+            artist += artist_split_list[n][1:]
+        elif len_of_word==1 and artist_split_list[n] == "-":
+            continue
+        elif artist_split_list[n][len_of_word-1:len_of_word] == "-" and n!=len(artist_split_list)-1:
+            artist += artist_split_list[n]
+        elif n==len(artist_split_list)-1 and artist_split_list[n][len_of_word-1:len_of_word] == "-":
+            artist += artist_split_list[n][0:len_of_word-1]
+        elif n==len(artist_split_list)-1 and artist_split_list[n][len_of_word-1:len_of_word] != "-":
+            artist += artist_split_list[n]
+        else:
+            artist += artist_split_list[n]+"-"
+
+    #loops through and produces a song_title string that is usuable in the url search
     song_title = song_title.lower()
-    #FUTURE_IDEA: you can take each word from the song_title and artist name split it into a list (.split()), remove all
-    # non-alphanumeric characters with the easy solution (re.sub('[^A-Za-z0-9]+', "-", artist/song_title))
-    # and then simply form a new string in which each word is seperated by a "-"
+    song_split_list = song_title.split(" ")
+    song_title = ""
+    for n in range(0,len(song_split_list)):
+        song_split_list[n] = song_split_list[n].replace("'","").replace("&","and").replace(".","").replace("(","").replace(")","")
+        song_split_list[n] = re.sub('[^A-Za-z0-9]+',"-",song_split_list[n])
+        len_of_word = len(song_split_list[n])
+        if n==0 and song_split_list[n][0:1] == "-":
+            song_title += song_split_list[n][1:]
+        elif len_of_word==1 and song_split_list[n] == "-":
+            continue
+        elif song_split_list[n][len_of_word-1:len_of_word] == "-" and n!=len(song_split_list)-1:
+            song_title += song_split_list[n]
+        elif n==len(song_split_list)-1 and song_split_list[n][len_of_word-1:len_of_word] == "-":
+            song_title += song_split_list[n][0:len_of_word-1]
+        elif n==len(song_split_list)-1 and song_split_list[n][len_of_word-1:len_of_word] != "-":
+            song_title += song_split_list[n]
+        else:
+            song_title += song_split_list[n]+"-"
 
-    artist = artist.replace("&","and").replace("é","e")
-    # remove all except alphanumeric characters from artist and song_title
-    artist = re.sub('[^A-Za-z0-9]+', "-", artist)
-
-    #Here I am deleting specific non-alphanumeric characters (can't just generally replace all of them with "-"
-    # as certain characters like the apostrophe occur right in the middle of a word and a replacement there
-    # would mess up the url
-    song_title = song_title.replace("'","").replace("&","and").replace(".","").replace("(","").replace(")","")
-    song_title = song_title.replace(" ","-")
     url = "https://genius.com/"+artist+"-"+song_title+"-lyrics"
 
     try:
@@ -50,7 +89,10 @@ def get_artists_fr_song(artist,song_title):
         while(list_is_closed==False):
             #THE LOOP NEEDS TO BE FIXED
             artist_name = song_info[front_index+6:end_index]
-            if artist_name not in artist_list:
+            artist_name = artist_name.replace("&amp;","&")
+            # This checks if the artist is already in the list and that it doesn't have any copies in the list with small variations
+            # E.G. 'Nav And Metro Boomin' vs 'Nav & Metro Boomin'
+            if artist_name not in artist_list and artist_name.lower()!=artist_original.lower() and artist_name.lower()!=artist_copy1.lower() and artist_name.lower()!=artist_copy2.lower():
                 artist_list.append(artist_name)
             if song_info[end_index+6:end_index+7]==']':
                 list_is_closed = True
@@ -71,8 +113,9 @@ def get_artists_fr_song(artist,song_title):
                 else:
                     featured_artists+=artist_list[n]
 
+        featured_artists = featured_artists.replace("&amp;","&")
         return featured_artists
     except Exception as e:
-        return "Exception occurred \n" +str(e)
+        return "Exception occurred \n123"
 
-# print get_artists_fr_song("A$AP Mob","RAF")
+# print get_artists_fr_song("DJ Khaled","I Can't Even Lie")

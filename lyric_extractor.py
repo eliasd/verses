@@ -22,7 +22,7 @@ def get_lyrics(artist,song_title):
         len_of_word = len(artist_split_list[n])
         if n==0 and artist_split_list[n][0:1] == "-":
             artist += artist_split_list[n][1:]
-        elif len_of_word==1 and artistm_split_list[n] == "-":
+        elif len_of_word==1 and artist_split_list[n] == "-":
             continue
         elif artist_split_list[n][len_of_word-1:len_of_word] == "-" and n!=len(artist_split_list)-1:
             artist += artist_split_list[n]

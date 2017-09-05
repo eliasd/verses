@@ -36,18 +36,18 @@ class MainHandler(webapp2.RequestHandler):
         #   Ultimately, this section would randomly retrieve Datastore elements that were already stored in the Database
         #   due to the Cron Tab and Execution (as opposed to manually storing them here)
         #------------------------------------------------------------------------------------------------------#
-        # artist_temp = Artist(name = "Tyler, The Creator")
+        # artist_temp = Artist(name = "BROCKHAMPTON")
         # artist_temp_key = artist_temp.put()
-        # song_temp = Song(title = "Where This Flower Blooms", artist_key = artist_temp_key,feat_artist="Frank Ocean")
+        # song_temp = Song(title = "GOLD", artist_key = artist_temp_key,feat_artist="")
         # song_temp_key = song_temp.put()
-        # one_line_lyric_temp = OneLineLyric(lyric_text="I rock, I roll, I bloom, I glow (I glow)",vote_count=0,song_key=song_temp_key,artist_key=artist_temp_key)
+        # one_line_lyric_temp = OneLineLyric(lyric_text="Grab life by the horns when I whip the Lambo",vote_count=0,song_key=song_temp_key,artist_key=artist_temp_key)
         # lyric_key = one_line_lyric_temp.put()
-        # #
-        # artist_temp = Artist(name = "Jay-Z")
+        # # #
+        # artist_temp = Artist(name = "Bruno Mars")
         # artist_temp_key = artist_temp.put()
-        # song_temp = Song(title = "Legacy", artist_key = artist_temp_key,feat_artist="")
+        # song_temp = Song(title = "Straight Up & Down", artist_key = artist_temp_key,feat_artist="")
         # song_temp_key = song_temp.put()
-        # one_line_lyric_temp = OneLineLyric(lyric_text="Black excellence baby, you gon' let 'em see",vote_count=0,song_key=song_temp_key,artist_key=artist_temp_key)
+        # one_line_lyric_temp = OneLineLyric(lyric_text="Girl I bet your momma named you good lookin'",vote_count=0,song_key=song_temp_key,artist_key=artist_temp_key)
         # lyric_key = one_line_lyric_temp.put()
 
         template = jinja_env.get_template('templates/main.html')

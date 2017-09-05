@@ -16,7 +16,7 @@ def get_one_lyric(song_lyrics_list):
         random_index = random.randint(0,list_length)
         return song_lyrics_list[random_index]
     except Exception as e:
-        return "Exception occured \n"
+        return "Exception occured \n123"
 
 # uses AZlyrics
 def get_one_lyric2(song_lyrics):

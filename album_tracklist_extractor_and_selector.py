@@ -35,6 +35,7 @@ def get_random_track(artist,album):
 
     artist = artist.lower()
     artist = artist.capitalize()
+    artist = artist.replace('&','and')
     # remove all except alphanumeric characters from artist
     artist = re.sub('[^A-Za-z0-9]+', "-", artist)
     url = "http://genius.com/albums/"+artist+"/"+album
@@ -78,7 +79,7 @@ def get_random_track(artist,album):
             # #Decoding html entities in python string by simply replacing it
             #NOTICE: CONSIDER moving the decoding into main.py
             # song_title = song_title.replace('&amp;','&')
-            song_title = song_title.replace('\xc2','').replace('\xa0','').replace('\xe2','').replace("\x80",'').replace('\x8b','')
+            song_title = song_title.replace('\xc2','').replace('\xa0','').replace('\xe2','').replace("\x80",'').replace('\x8b','').replace("&amp;","&").replace('\x99',"'")
             track_list.append(song_title)
             # current_index is updated to proceed down the html page
             current_index=current_index+1
@@ -153,4 +154,4 @@ def get_random_track2(artist,album):
     except Exception as e:
         return "Exception occurred \n"
 
-print get_random_track('Kendrick Lamar','DAMN.')
+print get_random_track('Logic','Everybody')
