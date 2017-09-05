@@ -5,10 +5,21 @@ import sys
 sys.path.insert(0, 'lib')
 from bs4 import BeautifulSoup
 import random
+from lyric_extractor import get_lyrics
 
 # Part of 'album_track_lyric_search_functions'
 #parses through a song's lyrics and randomly returns one line from the track
-def get_one_lyric(song_lyrics):
+# uses Genius
+def get_one_lyric(song_lyrics_list):
+    try:
+        list_length = len(song_lyrics_list)
+        random_index = random.randint(0,list_length)
+        return song_lyrics_list[random_index]
+    except Exception as e:
+        return "Exception occured \n"
+
+# uses AZlyrics
+def get_one_lyric2(song_lyrics):
     try:
         line_list = song_lyrics.split("\n")
         # number_of_lines = song_lyrics.count("\n")+1
@@ -31,6 +42,9 @@ def get_one_lyric(song_lyrics):
         return "Exception occurred \n" +str(e)
 
 
-# lyric = get_lyrics("Tyler, The Creator","Where This Flower Blooms")
+# lyric = get_lyrics("Jay-Z","4:44")
+#
+# for n in lyric:
+#     print n
 #
 # print get_one_lyric(lyric)

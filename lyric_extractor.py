@@ -6,7 +6,7 @@ import sys
 sys.path.insert(0, 'lib')
 from bs4 import BeautifulSoup
 
-# # Part of 'album_track_lyric_search_functions'
+# # Part of 'album_track_lyric_search_functions' uses 'genius'
 def get_lyrics(artist,song_title):
     artist = artist.lower()
     artist = artist.capitalize()
@@ -72,7 +72,9 @@ def get_lyrics(artist,song_title):
         down_partition = '<!--/sse-->'
         lyric_page = lyric_page.split(up_partition)[1]
         lyric_page = lyric_page.split(down_partition)[0]
+        # Removes a bunch of unnecessary tags
         lyric_page = lyric_page.replace('</i>','').replace('<i>','').replace("</a>","").replace("<p>","").replace("</p>","").replace("<br/>","")
+        # removes all anchor tags
         no_more_a_tags = False
         while(no_more_a_tags==False):
             if lyric_page.find("<a")>=0:
@@ -83,10 +85,30 @@ def get_lyrics(artist,song_title):
                 no_more_a_tags = True
         # Returns a list of the lyrics with each line being a seperate element
         lyric_list = lyric_page.split("\n")
-        return lyric_list
+        length_list = len(lyric_list)
+        ignore_index_list = []
+        final_lyric_list = []
+        for n in range(0,length_list):
+            if lyric_list[n].find("[Video")>=0 and lyric_list[n].find("]")>=0:
+                ignore_index_list.append(n)
+                for i in range(n+1,length_list):
+                    if lyric_list[i].find("[")<0 and lyric_list[i].find(']')<0:
+                        ignore_index_list.append(i)
+                    else:
+                        break
+            elif n in ignore_index_list:
+                continue
+            else:
+                if lyric_list[n]=="" or (lyric_list[n].find("[")>=0 and lyric_list[n].find("]")>=0):
+                    continue
+                else:
+                    final_lyric_list.append(lyric_list[n])
+
+        return final_lyric_list
     except Exception as e:
         return "Exception occurred \n" +str(e)
 
+#  uses AZlyrics
 def get_lyrics2(artist,song_title):
     artist = artist.lower()
     song_title = song_title.lower()
@@ -112,4 +134,4 @@ def get_lyrics2(artist,song_title):
         return "Exception occurred \n" +str(e)
 
 # Test a little more
-print get_lyrics("Kendrick Lamar","lOYALTY.")
+# print get_lyrics("Kendrick Lamar","HUMBLE.")
