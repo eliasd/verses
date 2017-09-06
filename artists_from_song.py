@@ -89,11 +89,13 @@ def get_artists_fr_song(artist,song_title):
         while(list_is_closed==False):
             #THE LOOP NEEDS TO BE FIXED
             artist_name = song_info[front_index+6:end_index]
-            artist_name = artist_name.replace("&amp;","&")
+            artist_name = artist_name.replace("&amp;","&").replace("\xe2\x80\x8b","")
+
             # This checks if the artist is already in the list and that it doesn't have any copies in the list with small variations
             # E.G. 'Nav And Metro Boomin' vs 'Nav & Metro Boomin'
             if artist_name not in artist_list and artist_name.lower()!=artist_original.lower() and artist_name.lower()!=artist_copy1.lower() and artist_name.lower()!=artist_copy2.lower():
                 artist_list.append(artist_name)
+                print artist_list
             if song_info[end_index+6:end_index+7]==']':
                 list_is_closed = True
             else:
@@ -118,4 +120,4 @@ def get_artists_fr_song(artist,song_title):
     except Exception as e:
         return "Exception occurred \n123"
 
-# print get_artists_fr_song("DJ Khaled","I Can't Even Lie")
+print get_artists_fr_song("Blackbear","I miss the old u")

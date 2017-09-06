@@ -1,10 +1,10 @@
 // Handlers used in section-hover change-color effect
-function handlerIn(){
- $(this).css("background-color","red");
-};
-function handlerOut(){
- $(this).css("background-color","blue");
-};
+// function handlerIn(){
+//  $(this).css("background-color","red");
+// };
+// function handlerOut(){
+//  $(this).css("background-color","blue");
+// };
 
 // Left side Handler uses AJAX to send the data on the page to the server
 function handlerVoteLeft(){
@@ -85,9 +85,9 @@ function handlerVoteRight(){
 
 
 function setupHandlers(){
-  $('.section').hover(handlerIn,handlerOut);
-  $('#section-left').click(handlerVoteLeft);
-  $('#section-right').click(handlerVoteRight);
+  // $('.section').hover(handlerIn,handlerOut);
+  $('#subsection-left').click(handlerVoteLeft);
+  $('#subsection-right').click(handlerVoteRight);
 }
 
 
