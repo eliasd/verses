@@ -95,7 +95,7 @@ def get_artists_fr_song(artist,song_title):
             # E.G. 'Nav And Metro Boomin' vs 'Nav & Metro Boomin'
             if artist_name not in artist_list and artist_name.lower()!=artist_original.lower() and artist_name.lower()!=artist_copy1.lower() and artist_name.lower()!=artist_copy2.lower():
                 artist_list.append(artist_name)
-                print artist_list
+                # print artist_list
             if song_info[end_index+6:end_index+7]==']':
                 list_is_closed = True
             else:
@@ -120,4 +120,4 @@ def get_artists_fr_song(artist,song_title):
     except Exception as e:
         return "Exception occurred \n123"
 
-print get_artists_fr_song("Blackbear","I miss the old u")
+# print get_artists_fr_song("Blackbear","I miss the old u")
