@@ -1,0 +1,165 @@
+body{
+  margin:0;
+  display:flex;
+  flex-direction:column;
+  background-color: #ECF0F1;
+}
+
+#header{
+  /*display: flex;*/
+  overflow:hidden;
+  position:fixed;
+  background-color:#1ABC9C;
+  top:0px;
+  left:0px;
+  width:100%;
+  z-index:11;
+}
+
+.tab{
+  float: left;
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  font-family:Dosis;
+}
+
+.tab:hover{
+  background-color:orange;
+}
+
+.tab a{
+  text-decoration:none;
+  color:purple;
+}
+
+#verses-tab{
+  font-size:30px;
+}
+
+#pop-tab{
+  padding-top:26px;
+}
+
+#about-tab{
+  padding-top:26px;
+}
+
+/*#header-spacer{
+  width:100%;
+  height:66px;
+}*/
+
+/*PAGE CONTAINER CSS*/
+#page-container{
+  z-index:10;
+  margin:auto;
+  margin-top:85px; /*margin-top is set in order to put some space between the header and the container*/
+  display: table;
+
+  width:100%;
+  height:100%;
+}
+
+#main{
+  display:block;
+  vertical-align: top;
+  width:600px;
+  background-color:#ECF0F1;
+  margin:auto;
+}
+
+.box{
+  background-color: #fff;
+  box-sizing: border-box;
+  margin-bottom: 50px;
+}
+
+.pad{
+  padding:1em;
+  box-sizing: border-box;
+  margin:0px;
+  display:block;
+  font-family:Rubik;
+}
+
+.tabs{
+  width:100%;
+  box-sizing: border-box;
+  padding:0px;
+  margin:0px;
+  display:block;
+}
+
+.tab-one-line{
+  color:#E74C3C;
+  border-bottom: 4px solid #E74C3C;
+  text-align: center;
+  width:100%;
+  height:25px;
+  cursor:pointer;
+
+  font-weight:bold;
+  font-family:Rubik;
+}
+
+/*General Lyric List and List elements CSS*/
+.lyric{
+  padding: 1em;
+  border-top:2px solid #ECF0F1;
+  font-family: Rubik;
+}
+
+.text-container{
+  display:block;
+}
+.text{
+  display:inline-block;
+  padding-bottom: 0.4em;
+  max-width: 85%;
+}
+.text-label{
+  display: inline-block;
+  font-size: 90%;
+  color:gray;
+  vertical-align: top;
+}
+.rank{
+  display:inline-block;
+  float:right;
+}
+
+.song-container{
+  display:block;
+}
+
+.song{
+  display:inline-block;
+  padding-top:0.4em;
+  padding-bottom:0.2em;
+  font-style: italic;
+}
+
+.song-label{
+  display:inline-block;
+  font-size: 90%;
+  color:gray;
+}
+
+.artist-container{
+  display: block;
+}
+.artist{
+  display:inline-block;
+  padding-top: 0.2em;
+  padding-bottom: 0.2em;
+}
+.artist-label{
+  display:inline-block;
+  font-size: 90%;
+  color:gray;
+}
+.feat_artist{
+  display:inline-block;
+}

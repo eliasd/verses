@@ -30,6 +30,7 @@ jinja_env = jinja2.Environment(
 ##NOTICE: BUILD CRON FILE
 def randomIndex(a,b):
     return random.randint(a,b-1)
+
 class MainHandler(webapp2.RequestHandler):
     def get(self):
         # NOTICE: These were temporarily stored in Datastore in order to test ajax
@@ -77,6 +78,11 @@ class MainHandler(webapp2.RequestHandler):
         }
 
         self.response.write(template.render(main_template_variables))
+
+class PopularHandler(webapp2.RequestHandler):
+    def get(self):
+        template = jinja_env.get_template('templates/popular.html')
+        self.response.write(template.render())
 
 class VoteHandler(webapp2.RequestHandler):
     def post(self):
@@ -150,5 +156,6 @@ class VoteHandler(webapp2.RequestHandler):
 
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
+    ('/popular',PopularHandler),
     ('/vote/',VoteHandler)
 ], debug=True)
