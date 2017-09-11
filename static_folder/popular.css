@@ -27,11 +27,14 @@ body{
 
 .tab:hover{
   background-color:orange;
+  cursor:pointer;
 }
 
 .tab a{
   text-decoration:none;
   color:purple;
+  cursor:pointer;
+
 }
 
 #verses-tab{
