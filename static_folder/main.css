@@ -4,14 +4,6 @@ body{
   flex-direction:column;
 }
 
-/*#page{*/
-/*  display: flex;*/
-/*  flex-direction: column;*/
-/*  height:100%;*/
-/*  width:100%;*/
-/*  overflow:hidden;*/
-/*}*/
-
 #header{
   display: flex;
   overflow:hidden;
