@@ -6,7 +6,7 @@ body{
 }
 
 #header{
-  /*display: flex;*/
+  display: flex;
   overflow:hidden;
   position:fixed;
   background-color:#1ABC9C;
