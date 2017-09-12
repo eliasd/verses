@@ -27,7 +27,7 @@ body{
 
 .tab:hover{
   background-color:orange;
-  cursor:pointer;
+  /*cursor:pointer;*/
 }
 
 .tab a{
@@ -164,4 +164,50 @@ body{
 }
 .feat_artist{
   display:inline-block;
+}
+
+
+/*FOOTER CSS STUFF*/
+.footer{
+  display:block;
+  height:180px;
+
+  background-color: #2C3E50;
+  font-family:Rubik;
+  color:#ECF0F1;
+
+  text-align: center;
+}
+
+.footer-box{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin:auto;
+  height:100%;
+  width:30%;
+}
+
+.top-footer-label{
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height:50px;
+  text-align: center;
+  border-bottom: 1px solid #ECF0F1;
+}
+
+.bottom-footer-label{
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height:50px;
+  text-align: center;
+}
+
+.footer a{
+  color:#ECF0F1;
+  text-decoration:none;
 }
