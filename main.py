@@ -37,18 +37,18 @@ class MainHandler(webapp2.RequestHandler):
         #   Ultimately, this section would randomly retrieve Datastore elements that were already stored in the Database
         #   due to the Cron Tab and Execution (as opposed to manually storing them here)
         #------------------------------------------------------------------------------------------------------#
-        # artist_temp = Artist(name = "BROCKHAMPTON")
+        # artist_temp = Artist(name = "Kanye West")
         # artist_temp_key = artist_temp.put()
-        # song_temp = Song(title = "GOLD", artist_key = artist_temp_key,feat_artist="")
+        # song_temp = Song(title = "Diamonds From Sierra Leone (Remix)", artist_key = artist_temp_key,feat_artist="Jay-Z")
         # song_temp_key = song_temp.put()
-        # one_line_lyric_temp = OneLineLyric(lyric_text="Grab life by the horns when I whip the Lambo",vote_count=0,song_key=song_temp_key,artist_key=artist_temp_key)
+        # one_line_lyric_temp = OneLineLyric(lyric_text="I'm not a businessman; I'm a business, man!",vote_count=0,song_key=song_temp_key,artist_key=artist_temp_key)
         # lyric_key = one_line_lyric_temp.put()
-        # # #
-        # artist_temp = Artist(name = "Bruno Mars")
+        # # # # #
+        # artist_temp = Artist(name = "Steve Lacy")
         # artist_temp_key = artist_temp.put()
-        # song_temp = Song(title = "Straight Up & Down", artist_key = artist_temp_key,feat_artist="")
+        # song_temp = Song(title = "C U Girl", artist_key = artist_temp_key,feat_artist="")
         # song_temp_key = song_temp.put()
-        # one_line_lyric_temp = OneLineLyric(lyric_text="Girl I bet your momma named you good lookin'",vote_count=0,song_key=song_temp_key,artist_key=artist_temp_key)
+        # one_line_lyric_temp = OneLineLyric(lyric_text="I wanna see you girl",vote_count=0,song_key=song_temp_key,artist_key=artist_temp_key)
         # lyric_key = one_line_lyric_temp.put()
 
         template = jinja_env.get_template('templates/main.html')
@@ -85,6 +85,17 @@ class MainHandler(webapp2.RequestHandler):
 
         self.response.write(template.render(main_template_variables))
 
+
+def get_lyric_info(lyric_object):
+    song = Song.query(Song.key == lyric_object.song_key).get()
+    artist = Artist.query(Artist.key == lyric_object.artist_key).get()
+    featured_artist = ""
+    if song.feat_artist:
+        featured_artist = "(ft. %s)" % song.feat_artist
+    else:
+        featured_artist = ""
+    return song, artist, featured_artist
+
 class PopularHandler(webapp2.RequestHandler):
     def get(self):
         template = jinja_env.get_template('templates/popular.html')
@@ -92,10 +103,93 @@ class PopularHandler(webapp2.RequestHandler):
         popular_page_button = ("<a href='popular'>Popular Lyrics</a>")
         submit_lyrics_page_button = ("<a href='#'>Submit Lyrics</a>")
 
+        top_lyric_list = OneLineLyric.query().order(-OneLineLyric.vote_count).fetch(limit=10)
+
+        lyric_1 = top_lyric_list[0]
+        song_1, artist_1, featured_artist_1 = get_lyric_info(lyric_1)
+
+        lyric_2 = top_lyric_list[1]
+        song_2, artist_2, featured_artist_2 = get_lyric_info(lyric_2)
+
+        lyric_3 = top_lyric_list[2]
+        song_3, artist_3, featured_artist_3 = get_lyric_info(lyric_3)
+
+        lyric_4 = top_lyric_list[3]
+        song_4, artist_4, featured_artist_4 = get_lyric_info(lyric_4)
+
+        lyric_5 = top_lyric_list[4]
+        song_5, artist_5, featured_artist_5 = get_lyric_info(lyric_5)
+
+        lyric_6 = top_lyric_list[5]
+        song_6, artist_6, featured_artist_6 = get_lyric_info(lyric_6)
+
+        lyric_7 = top_lyric_list[6]
+        song_7, artist_7, featured_artist_7 = get_lyric_info(lyric_7)
+
+        lyric_8 = top_lyric_list[7]
+        song_8, artist_8, featured_artist_8 = get_lyric_info(lyric_8)
+
+        lyric_9 = top_lyric_list[8]
+        song_9, artist_9, featured_artist_9 = get_lyric_info(lyric_9)
+
+        lyric_10 = top_lyric_list[9]
+        song_10, artist_10, featured_artist_10 = get_lyric_info(lyric_10)
+
+
         popular_template_variables = {
             'main_page_button': main_page_button,
             'popular_page_button':popular_page_button,
-            'submit_lyrics_page_button':submit_lyrics_page_button
+            'submit_lyrics_page_button':submit_lyrics_page_button,
+
+            'lyric_1':lyric_1.lyric_text,
+            'song_1':song_1.title,
+            'artist_1':artist_1.name,
+            'feat_artist_1':featured_artist_1,
+
+            'lyric_2':lyric_2.lyric_text,
+            'song_2':song_2.title,
+            'artist_2':artist_2.name,
+            'feat_artist_2':featured_artist_2,
+
+            'lyric_3':lyric_3.lyric_text,
+            'song_3':song_3.title,
+            'artist_3':artist_3.name,
+            'feat_artist_3':featured_artist_3,
+
+            'lyric_4':lyric_4.lyric_text,
+            'song_4':song_4.title,
+            'artist_4':artist_4.name,
+            'feat_artist_4':featured_artist_4,
+
+            'lyric_5':lyric_5.lyric_text,
+            'song_5':song_5.title,
+            'artist_5':artist_5.name,
+            'feat_artist_5':featured_artist_5,
+
+            'lyric_6':lyric_6.lyric_text,
+            'song_6':song_6.title,
+            'artist_6':artist_6.name,
+            'feat_artist_6':featured_artist_6,
+
+            'lyric_7':lyric_7.lyric_text,
+            'song_7':song_7.title,
+            'artist_7':artist_7.name,
+            'feat_artist_7':featured_artist_7,
+
+            'lyric_8':lyric_8.lyric_text,
+            'song_8':song_8.title,
+            'artist_8':artist_8.name,
+            'feat_artist_8':featured_artist_8,
+
+            'lyric_9':lyric_9.lyric_text,
+            'song_9':song_9.title,
+            'artist_9':artist_9.name,
+            'feat_artist_9':featured_artist_9,
+
+            'lyric_10':lyric_10.lyric_text,
+            'song_10':song_10.title,
+            'artist_10':artist_10.name,
+            'feat_artist_10':featured_artist_10,
 
         }
         self.response.write(template.render(popular_template_variables))
@@ -119,8 +213,8 @@ class VoteHandler(webapp2.RequestHandler):
 
         #NOTICE | IMPORTANT: HERE, THE vote count of the selected lyric would increase in the database but in order to preserve the data
         # for testing, it is commented out until the vote count will be used later for the Trending Page
-        #lyric_selected.vote_count += 1
-        #lyric_selected.put()
+        lyric_selected.vote_count += 1
+        lyric_selected.put()
 
         #NOTICE: THIS SECTION randomly selects TWO new One Line Lyric that are different from either of the lyrics
         # already on the page in order to replace BOTH the Left and Right side lyrics
