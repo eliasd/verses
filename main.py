@@ -52,7 +52,9 @@ class MainHandler(webapp2.RequestHandler):
         # lyric_key = one_line_lyric_temp.put()
 
         template = jinja_env.get_template('templates/main.html')
-
+        main_page_button = ("<a href='/'>Verses</a>")
+        popular_page_button = ("<a href='popular'>Popular Lyrics</a>")
+        submit_lyrics_page_button = ("<a href='#'>Submit Lyrics</a>")
         #NOTICE: Here specific lyric elements are individually selected as opposed to the eventual random selection charateristic
         lyric_list = OneLineLyric.query().fetch()
 
@@ -73,7 +75,11 @@ class MainHandler(webapp2.RequestHandler):
             'lyric_right': right_lyric_el.lyric_text,
             'song_name_right':right_song_el.title,
             'artist_name_right':right_artist_el.name,
-            'feat_artist_right':right_song_el.feat_artist
+            'feat_artist_right':right_song_el.feat_artist,
+
+            'main_page_button': main_page_button,
+            'popular_page_button':popular_page_button,
+            'submit_lyrics_page_button':submit_lyrics_page_button
 
         }
 
@@ -82,7 +88,17 @@ class MainHandler(webapp2.RequestHandler):
 class PopularHandler(webapp2.RequestHandler):
     def get(self):
         template = jinja_env.get_template('templates/popular.html')
-        self.response.write(template.render())
+        main_page_button = ("<a href='/'>Verses</a>")
+        popular_page_button = ("<a href='popular'>Popular Lyrics</a>")
+        submit_lyrics_page_button = ("<a href='#'>Submit Lyrics</a>")
+
+        popular_template_variables = {
+            'main_page_button': main_page_button,
+            'popular_page_button':popular_page_button,
+            'submit_lyrics_page_button':submit_lyrics_page_button
+
+        }
+        self.response.write(template.render(popular_template_variables))
 
 class VoteHandler(webapp2.RequestHandler):
     def post(self):
