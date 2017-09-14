@@ -54,7 +54,7 @@ class MainHandler(webapp2.RequestHandler):
         template = jinja_env.get_template('templates/main.html')
         main_page_button = ("<a href='/'>Verses</a>")
         popular_page_button = ("<a href='popular'>Popular Lyrics</a>")
-        submit_lyrics_page_button = ("<a href='#'>Submit Lyrics</a>")
+        submit_lyrics_page_button = ("<a href='submit'>Submit Lyrics</a>")
         #NOTICE: Here specific lyric elements are individually selected as opposed to the eventual random selection charateristic
         lyric_list = OneLineLyric.query().fetch()
 
@@ -85,7 +85,6 @@ class MainHandler(webapp2.RequestHandler):
 
         self.response.write(template.render(main_template_variables))
 
-
 def get_lyric_info(lyric_object):
     song = Song.query(Song.key == lyric_object.song_key).get()
     artist = Artist.query(Artist.key == lyric_object.artist_key).get()
@@ -101,7 +100,7 @@ class PopularHandler(webapp2.RequestHandler):
         template = jinja_env.get_template('templates/popular.html')
         main_page_button = ("<a href='/'>Verses</a>")
         popular_page_button = ("<a href='popular'>Popular Lyrics</a>")
-        submit_lyrics_page_button = ("<a href='#'>Submit Lyrics</a>")
+        submit_lyrics_page_button = ("<a href='submit'>Submit Lyrics</a>")
 
         top_lyric_list = OneLineLyric.query().order(-OneLineLyric.vote_count).fetch(limit=10)
 
@@ -194,6 +193,19 @@ class PopularHandler(webapp2.RequestHandler):
         }
         self.response.write(template.render(popular_template_variables))
 
+class SubmitHandler(webapp2.RequestHandler):
+    def get(self):
+        template = jinja_env.get_template('templates/submit.html')
+        main_page_button = ("<a href='/'>Verses</a>")
+        popular_page_button = ("<a href='popular'>Popular Lyrics</a>")
+        submit_lyrics_page_button = ("<a href='submit'>Submit Lyrics</a>")
+
+        submit_template_variables = {
+            'main_page_button': main_page_button,
+            'popular_page_button':popular_page_button,
+            'submit_lyrics_page_button':submit_lyrics_page_button
+        }
+        self.response.write(template.render(submit_template_variables))
 class VoteHandler(webapp2.RequestHandler):
     def post(self):
         #HERE The handler recieves the json data and extracts the specific datastore objects that matche the json data
@@ -267,5 +279,6 @@ class VoteHandler(webapp2.RequestHandler):
 app = webapp2.WSGIApplication([
     ('/', MainHandler),
     ('/popular',PopularHandler),
+    ('/submit',SubmitHandler),
     ('/vote/',VoteHandler)
 ], debug=True)
