@@ -1,6 +1,6 @@
 # Verses
 
-Verses is a pet project website that aimed at collecting and sharing some of the most popular lyric verses from hip-hop music.
+Verses is a pet project that aimed at collecting and sharing some of the most popular lyric verses from hip-hop music.
 On the site, visitors could vote between lyric choices and view the most "upvoted" lyrics. 
 
 ![image](https://user-images.githubusercontent.com/22202803/44312341-596f4680-a3ab-11e8-8687-ff1fd7d384b0.png)
